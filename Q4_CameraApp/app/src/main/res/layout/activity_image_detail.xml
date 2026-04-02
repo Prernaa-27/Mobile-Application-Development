@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAF7F8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:paddingTop="36dp">
+
+        <ImageButton
+            android:id="@+id/btnBackDetail"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="#00000000"
+            android:src="@android:drawable/ic_media_previous"
+            android:layout_marginBottom="12dp" />
+
+        <ImageView
+            android:id="@+id/ivPreview"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:scaleType="centerCrop"
+            android:background="#FFFFFF"
+            android:layout_marginBottom="18dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/card_bg"
+            android:elevation="4dp"
+            android:layout_marginBottom="18dp">
+
+            <TextView
+                android:id="@+id/tvImageName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name:"
+                android:textSize="16sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tvImagePath"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Path:"
+                android:textSize="16sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tvImageSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Size:"
+                android:textSize="16sp"
+                android:textColor="#2B2B2B"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tvImageDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date Taken:"
+                android:textSize="16sp"
+                android:textColor="#2B2B2B" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Delete Image"
+            android:textAllCaps="false"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_dark_pink" />
+
+    </LinearLayout>
+</ScrollView>

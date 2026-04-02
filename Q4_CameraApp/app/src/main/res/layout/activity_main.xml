@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAF7F8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:paddingTop="52dp"
+        android:paddingBottom="32dp">
+
+        <TextView
+            android:id="@+id/tvTopLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="✨ Smart Camera Gallery"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#D65A92"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Capture, save and manage your photos beautifully"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="#1F1F1F"
+            android:lineSpacingExtra="4dp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose a folder, take photos, open your gallery, and view image details in one place."
+            android:textSize="15sp"
+            android:textColor="#666666"
+            android:lineSpacingExtra="3dp"
+            android:layout_marginBottom="26dp" />
+
+        <LinearLayout
+            android:id="@+id/folderCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/card_bg"
+            android:elevation="6dp"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:id="@+id/tvFolderCardTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📁 Selected Folder"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#222222"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:id="@+id/tvFolderPath"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No folder selected yet"
+                android:textSize="15sp"
+                android:textColor="#7A7A7A"
+                android:lineSpacingExtra="2dp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnChooseFolder"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Choose Folder"
+            android:textAllCaps="false"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_pink"
+            android:layout_marginBottom="14dp" />
+
+        <Button
+            android:id="@+id/btnTakePhoto"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Take Photo"
+            android:textAllCaps="false"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_light_pink"
+            android:layout_marginBottom="14dp" />
+
+        <Button
+            android:id="@+id/btnOpenGallery"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Open Gallery"
+            android:textAllCaps="false"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_dark_pink"
+            android:layout_marginBottom="22dp" />
+
+        <TextView
+            android:id="@+id/tvFooterHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tip: Select a folder first so captured images can be saved and viewed smoothly."
+            android:textSize="13sp"
+            android:textColor="#8A8A8A"
+            android:gravity="center"
+            android:lineSpacingExtra="2dp" />
+
+    </LinearLayout>
+</ScrollView>
