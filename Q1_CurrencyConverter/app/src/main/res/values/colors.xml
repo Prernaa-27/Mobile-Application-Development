@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="screen_background">#FFF0F5</color>
+    <color name="screen_text">#000000</color>
+</resources>
