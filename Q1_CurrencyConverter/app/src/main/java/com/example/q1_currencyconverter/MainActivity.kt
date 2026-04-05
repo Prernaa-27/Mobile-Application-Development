@@ -21,15 +21,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnSettings: Button
     private lateinit var tvResult: TextView
 
+    // using INR as the middle-man for all conversions
+    // so 1 USD = 92 INR, 1 EUR = 107 INR, etc.
     private val currencyRates = mapOf(
         "INR" to 1.0,
-        "USD" to 83.0,
-        "JPY" to 0.56,
-        "EUR" to 90.0
+        "USD" to 92.72,
+        "JPY" to 0.58,
+        "EUR" to 107.28
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        // load theme before super/setContentView or the screen flickers on launch
         val sharedPreferences = getSharedPreferences("theme_pref", MODE_PRIVATE)
         val savedTheme = sharedPreferences.getString("theme_mode", "LIGHT")
 
@@ -51,6 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         val currencyList = arrayOf("INR", "USD", "JPY", "EUR")
 
+        // same adapter for both spinners, they show the same list
         val adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
@@ -81,6 +85,7 @@ class MainActivity : AppCompatActivity() {
 
         val amount = amountText.toDoubleOrNull()
 
+        // toDoubleOrNull returns null if someone typed letters etc.
         if (amount == null) {
             Toast.makeText(this, "Please enter a valid number", Toast.LENGTH_SHORT).show()
             return
@@ -92,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         val fromRate = currencyRates[fromCurrency] ?: 1.0
         val toRate = currencyRates[toCurrency] ?: 1.0
 
-        // Convert source currency to INR, then INR to target currency
+        // first go to INR, then from INR to whatever the target is
         val amountInInr = amount * fromRate
         val convertedAmount = amountInInr / toRate
 

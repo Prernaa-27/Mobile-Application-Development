@@ -26,20 +26,18 @@ class MainActivity : AppCompatActivity() {
     private var selectedAudioUri: Uri? = null
     private var currentVideoUri: Uri? = null
 
-    // Keeps track of what type of media is currently loaded
+    // "AUDIO", "VIDEO", or empty if nothing is loaded
     private var currentMediaType: String = ""
 
-    // File picker for selecting audio from device storage
+    // filters to audio only when picking from storage
     private val audioPickerLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
                 selectedAudioUri = uri
                 currentMediaType = "AUDIO"
-
-                // Release old MediaPlayer before creating a new one
+                // ditch the old instance before making a new one
                 mediaPlayer?.release()
                 mediaPlayer = MediaPlayer.create(this, uri)
-
                 Toast.makeText(this, "Audio file selected", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show()
@@ -59,34 +57,19 @@ class MainActivity : AppCompatActivity() {
         etVideoUrl = findViewById(R.id.etVideoUrl)
         videoView = findViewById(R.id.videoView)
 
+        // attach the controls bar to the video view
         val mediaController = MediaController(this)
         mediaController.setAnchorView(videoView)
         videoView.setMediaController(mediaController)
 
         btnOpenFile.setOnClickListener {
-            // Open file picker for audio files only
             audioPickerLauncher.launch("audio/*")
         }
-
-        btnOpenUrl.setOnClickListener {
-            openVideoFromUrl()
-        }
-
-        btnPlay.setOnClickListener {
-            playMedia()
-        }
-
-        btnPause.setOnClickListener {
-            pauseMedia()
-        }
-
-        btnStop.setOnClickListener {
-            stopMedia()
-        }
-
-        btnRestart.setOnClickListener {
-            restartMedia()
-        }
+        btnOpenUrl.setOnClickListener { openVideoFromUrl() }
+        btnPlay.setOnClickListener { playMedia() }
+        btnPause.setOnClickListener { pauseMedia() }
+        btnStop.setOnClickListener { stopMedia() }
+        btnRestart.setOnClickListener { restartMedia() }
     }
 
     private fun openVideoFromUrl() {
@@ -97,6 +80,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        // must start with http or https, nothing else is valid here
         if (!url.startsWith("http://") && !url.startsWith("https://")) {
             Toast.makeText(this, "Enter a valid URL starting with http or https", Toast.LENGTH_SHORT).show()
             return
@@ -106,7 +90,7 @@ class MainActivity : AppCompatActivity() {
             currentVideoUri = Uri.parse(url)
             currentMediaType = "VIDEO"
 
-            // Stop audio if video is selected
+            // pause audio if it was going when the user switched to video
             if (mediaPlayer != null && mediaPlayer!!.isPlaying) {
                 mediaPlayer!!.pause()
             }
@@ -123,7 +107,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Cannot play this video", Toast.LENGTH_SHORT).show()
                 true
             }
-
         } catch (e: Exception) {
             Toast.makeText(this, "Invalid video URL", Toast.LENGTH_SHORT).show()
         }
@@ -132,17 +115,16 @@ class MainActivity : AppCompatActivity() {
     private fun playMedia() {
         when (currentMediaType) {
             "AUDIO" -> {
+                // recreate if it got released
                 if (mediaPlayer == null && selectedAudioUri != null) {
                     mediaPlayer = MediaPlayer.create(this, selectedAudioUri)
                 }
-
                 if (mediaPlayer != null && !mediaPlayer!!.isPlaying) {
                     mediaPlayer!!.start()
                 } else if (mediaPlayer == null) {
                     Toast.makeText(this, "Please select an audio file first", Toast.LENGTH_SHORT).show()
                 }
             }
-
             "VIDEO" -> {
                 if (currentVideoUri != null) {
                     videoView.start()
@@ -150,10 +132,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "Please open a video URL first", Toast.LENGTH_SHORT).show()
                 }
             }
-
-            else -> {
-                Toast.makeText(this, "Please open a file or URL first", Toast.LENGTH_SHORT).show()
-            }
+            else -> Toast.makeText(this, "Please open a file or URL first", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -164,16 +143,10 @@ class MainActivity : AppCompatActivity() {
                     mediaPlayer!!.pause()
                 }
             }
-
             "VIDEO" -> {
-                if (videoView.isPlaying) {
-                    videoView.pause()
-                }
+                if (videoView.isPlaying) videoView.pause()
             }
-
-            else -> {
-                Toast.makeText(this, "No media is loaded", Toast.LENGTH_SHORT).show()
-            }
+            else -> Toast.makeText(this, "No media is loaded", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -184,24 +157,19 @@ class MainActivity : AppCompatActivity() {
                     mediaPlayer!!.stop()
                     mediaPlayer!!.release()
                     mediaPlayer = null
-
-                    // Prepare the same audio again so it can be played later
+                    // reload so play works again after stop
                     if (selectedAudioUri != null) {
                         mediaPlayer = MediaPlayer.create(this, selectedAudioUri)
                     }
                 }
             }
-
             "VIDEO" -> {
                 if (currentVideoUri != null) {
                     videoView.pause()
                     videoView.seekTo(0)
                 }
             }
-
-            else -> {
-                Toast.makeText(this, "No media is loaded", Toast.LENGTH_SHORT).show()
-            }
+            else -> Toast.makeText(this, "No media is loaded", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -213,24 +181,19 @@ class MainActivity : AppCompatActivity() {
                     mediaPlayer!!.start()
                 }
             }
-
             "VIDEO" -> {
                 if (currentVideoUri != null) {
                     videoView.seekTo(0)
                     videoView.start()
                 }
             }
-
-            else -> {
-                Toast.makeText(this, "No media is loaded", Toast.LENGTH_SHORT).show()
-            }
+            else -> Toast.makeText(this, "No media is loaded", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-
-        // Release MediaPlayer resources when activity is destroyed
+        // free up memory when the screen closes
         mediaPlayer?.release()
         mediaPlayer = null
     }
