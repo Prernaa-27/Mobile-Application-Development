@@ -10,15 +10,18 @@ import com.bumptech.glide.Glide
 
 class ImageAdapter(
     private val imageList: List<ImageItem>,
+    // lambda so the activity decides what happens when an image is tapped
     private val onItemClick: (ImageItem) -> Unit
 ) : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 
+    // holds references to the views inside each grid item
     class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imagePreview: ImageView = itemView.findViewById(R.id.ivImage)
         val imageName: TextView = itemView.findViewById(R.id.tvImageName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
+        // inflate the item_image layout for each grid cell
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_image, parent, false)
         return ImageViewHolder(view)
@@ -33,6 +36,7 @@ class ImageAdapter(
 
         holder.imageName.text = image.name
 
+        // glide loads from the uri string and crops to fit the fixed thumbnail size
         Glide.with(holder.itemView.context)
             .load(image.uriString)
             .centerCrop()

@@ -24,6 +24,7 @@ class GalleryActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
 
+    // uri of the photo being taken, kept until the camera returns
     private var currentPhotoUri: Uri? = null
     private val imageList = ArrayList<ImageItem>()
 
@@ -38,6 +39,7 @@ class GalleryActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences("q4_prefs", Context.MODE_PRIVATE)
 
+        // 2 column grid for the gallery
         recyclerView.layoutManager = GridLayoutManager(this, 2)
 
         btnBack.setOnClickListener {
@@ -50,6 +52,7 @@ class GalleryActivity : AppCompatActivity() {
 
         loadImages()
 
+        // MainActivity passes this as true when the user taps "Take Photo"
         val openCameraDirectly = intent.getBooleanExtra("open_camera", false)
         if (openCameraDirectly) {
             openCamera()
@@ -58,6 +61,7 @@ class GalleryActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        // reload so newly taken photos show up when coming back from camera
         loadImages()
     }
 
@@ -73,6 +77,7 @@ class GalleryActivity : AppCompatActivity() {
         }
 
         val folderUri = Uri.parse(folderUriString)
+        // fromTreeUri gives access to the whole folder, not just a single file
         val folderDocument = DocumentFile.fromTreeUri(this, folderUri)
 
         if (folderDocument == null || !folderDocument.exists()) {
@@ -85,6 +90,7 @@ class GalleryActivity : AppCompatActivity() {
         val files = folderDocument.listFiles()
 
         for (file in files) {
+            // skip non-image files like videos or docs that might be in the same folder
             if (file.isFile && file.type?.startsWith("image/") == true) {
                 val imageItem = ImageItem(
                     name = file.name ?: "Unknown",
@@ -97,6 +103,7 @@ class GalleryActivity : AppCompatActivity() {
             }
         }
 
+        // newest photos at the top
         imageList.sortByDescending { it.dateTaken }
 
         if (imageList.isEmpty()) {
@@ -106,6 +113,7 @@ class GalleryActivity : AppCompatActivity() {
             tvEmpty.visibility = TextView.GONE
         }
 
+        // pass all image details through the intent so ImageDetailActivity doesn't need to reload them
         recyclerView.adapter = ImageAdapter(imageList) { imageItem ->
             val intent = Intent(this, ImageDetailActivity::class.java)
             intent.putExtra("image_name", imageItem.name)
@@ -132,6 +140,7 @@ class GalleryActivity : AppCompatActivity() {
             return
         }
 
+        // elapsedRealtime gives a unique number so two photos never share a filename
         val fileName = "IMG_${SystemClock.elapsedRealtime()}.jpg"
         val imageFile = folderDocument.createFile("image/jpeg", fileName)
 
@@ -149,6 +158,7 @@ class GalleryActivity : AppCompatActivity() {
                 Toast.makeText(this, "Photo saved successfully", Toast.LENGTH_SHORT).show()
                 loadImages()
             } else {
+                // user backed out of the camera, file was already created so nothing to clean up here
                 Toast.makeText(this, "Photo capture cancelled", Toast.LENGTH_SHORT).show()
             }
         }

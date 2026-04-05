@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnOpenGallery: Button
     private lateinit var tvFolderPath: TextView
 
+    // used to remember the selected folder across app restarts
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences("q4_prefs", Context.MODE_PRIVATE)
 
+        // show whatever folder was saved last time the app was opened
         showSavedFolder()
 
         btnChooseFolder.setOnClickListener {
@@ -41,10 +43,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnTakePhoto.setOnClickListener {
+            // need camera permission before going to gallery with camera open
             checkCameraPermissionAndOpenGallery()
         }
 
         btnOpenGallery.setOnClickListener {
+            // false means just open gallery, don't trigger camera
             checkFolderAndOpenGallery(false)
         }
     }
@@ -61,12 +65,14 @@ class MainActivity : AppCompatActivity() {
     private fun checkFolderAndOpenGallery(openCameraDirectly: Boolean) {
         val folderUri = sharedPreferences.getString("folder_uri", null)
 
+        // don't let the user proceed without a folder, photos need somewhere to save
         if (folderUri == null) {
             Toast.makeText(this, "Please choose a folder first", Toast.LENGTH_SHORT).show()
             return
         }
 
         val intent = Intent(this, GalleryActivity::class.java)
+        // tells GalleryActivity whether to launch the camera straight away
         intent.putExtra("open_camera", openCameraDirectly)
         startActivity(intent)
     }
@@ -77,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         ) {
             checkFolderAndOpenGallery(true)
         } else {
+            // permission not granted yet, ask for it
             cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
@@ -84,6 +91,7 @@ class MainActivity : AppCompatActivity() {
     private val folderPickerLauncher =
         registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri: Uri? ->
             if (uri != null) {
+                // takePersistableUriPermission makes sure access survives a reboot
                 contentResolver.takePersistableUriPermission(
                     uri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION

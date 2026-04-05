@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- single grid item card for the gallery -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,14 +8,14 @@
     android:padding="8dp"
     android:layout_margin="8dp"
     android:elevation="4dp">
-
+    <!-- centerCrop so the image fills the box without stretching -->
     <ImageView
         android:id="@+id/ivImage"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:scaleType="centerCrop"
-        android:background="#F1F1F1" />
-
+        android:background="#F1F1F1"/>
+    <!-- ellipsize cuts off long names with ... instead of wrapping -->
     <TextView
         android:id="@+id/tvImageName"
         android:layout_width="match_parent"
@@ -24,6 +25,5 @@
         android:textColor="#333333"
         android:maxLines="1"
         android:ellipsize="end"
-        android:layout_marginTop="8dp" />
-
+        android:layout_marginTop="8dp"/>
 </LinearLayout>
