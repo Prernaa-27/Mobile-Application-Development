@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">UniGlobe</string>
+
+    <string-array name="career_options">
+        <item>Select option</item>
+        <item>Engineering</item>
+        <item>Medicine</item>
+        <item>Business</item>
+        <item>Arts</item>
+        <item>Law</item>
+    </string-array>
+
+    <string-array name="exams_options">
+        <item>Select option</item>
+        <item>SAT</item>
+        <item>ACT</item>
+        <item>GRE</item>
+        <item>GMAT</item>
+        <item>IELTS</item>
+        <item>TOEFL</item>
+        <item>JEE</item>
+        <item>NEET</item>
+        <item>GATE</item>
+        <item>CAT</item>
+    </string-array>
+
+    <string-array name="accommodation_options">
+        <item>Select option</item>
+        <item>On-campus dormitory</item>
+        <item>Off-campus apartment</item>
+        <item>Homestay</item>
+    </string-array>
+
+    <string-array name="location_options">
+        <item>Select option</item>
+        <item>United States</item>
+        <item>United Kingdom</item>
+        <item>India</item>
+        <item>Canada</item>
+        <item>Australia</item>
+    </string-array>
+
+    <string-array name="climate_options">
+        <item>Select option</item>
+        <item>Cold</item>
+        <item>Moderate</item>
+        <item>Warm</item>
+    </string-array>
+
+    <string-array name="extracurricular_options">
+        <item>Select option</item>
+        <item>Sports</item>
+        <item>Arts and Culture</item>
+        <item>Research Clubs</item>
+        <item>Debate</item>
+        <item>Volunteering</item>
+        <item>Tech Clubs</item>
+        <item>Music</item>
+        <item>Dance</item>
+    </string-array>
+
+    <string-array name="language_options">
+        <item>Select option</item>
+        <item>English</item>
+        <item>Hindi</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Spanish</item>
+    </string-array>
+
+</resources>
