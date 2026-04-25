@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E6E6FA">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to UniGlobe"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#4B0082"
+        android:layout_marginBottom="32dp"/>
+
+    <Button
+        android:id="@+id/googleSignInBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign in with Google"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#9370DB"
+        android:padding="12dp"/>
+</LinearLayout>

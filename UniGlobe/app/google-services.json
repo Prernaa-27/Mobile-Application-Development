@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1044653502222",
+    "project_id": "uniglobe-e0886",
+    "storage_bucket": "uniglobe-e0886.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044653502222:android:a9f4b06f33f085ee8a315f",
+        "android_client_info": {
+          "package_name": "com.example.uniglobe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1044653502222-v2s4e88dld7van8qhbva58lbootpigdd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.uniglobe",
+            "certificate_hash": "bc0b69ae7173efff46f835d6c6465a5fb88165de"
+          }
+        },
+        {
+          "client_id": "1044653502222-ovt1lo58t02evsiia660gsam6fmtroa0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8t3IXjcn19cLm--BSq0Vam_HZrTrmVgY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1044653502222-ovt1lo58t02evsiia660gsam6fmtroa0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
