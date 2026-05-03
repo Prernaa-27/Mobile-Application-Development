@@ -3,19 +3,17 @@ package com.example.uniglobe;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Toast;
+import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AnticipateOvershootInterpolator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 public class SplashActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,45 +21,47 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        View logoContainer = findViewById(R.id.logoContainer);
 
-        // Add a short splash delay (optional)
-        new Handler().postDelayed(this::checkUserStatus, 2000);
+        // --- Cinematic Animation Sequence ---
+        
+        // 1. Initial State (Invisible and small)
+        logoContainer.setAlpha(0f);
+        logoContainer.setScaleX(0.4f);
+        logoContainer.setScaleY(0.4f);
+        logoContainer.setTranslationY(100f);
+
+        // 2. Animate In (Fade in, Scale up, Slide up)
+        logoContainer.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .translationY(0f)
+                .setDuration(1500)
+                .setInterpolator(new AnticipateOvershootInterpolator(1.2f))
+                .withEndAction(() -> {
+                    // 3. Brief pause at peak state
+                    new Handler().postDelayed(this::checkUserStatus, 1000);
+                })
+                .start();
     }
 
     private void checkUserStatus() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if (currentUser == null) {
-            // No user logged in → go to login
-            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-            finish();
-        } else {
-            // User logged in → check questionnaire status in Firestore
-            db.collection("users").document(currentUser.getUid())
-                    .get()
-                    .addOnSuccessListener(document -> {
-                        if (document.exists()) {
-                            Boolean questionnaireCompleted = document.getBoolean("questionnaireCompleted");
-                            if (questionnaireCompleted != null && questionnaireCompleted) {
-                                // Questionnaire already filled → go to home
-                                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
-                            } else {
-                                // Questionnaire not filled → go to questionnaire
-                                startActivity(new Intent(SplashActivity.this, QuestionnaireActivity.class));
-                            }
-                        } else {
-                            // No user doc yet → treat as new user → questionnaire
-                            startActivity(new Intent(SplashActivity.this, QuestionnaireActivity.class));
-                        }
-                        finish();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(SplashActivity.this, "Error checking user data", Toast.LENGTH_SHORT).show();
-                        // Fallback → go to login
-                        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                        finish();
-                    });
-        }
+        // Simple fade out transition for the whole screen
+        findViewById(R.id.logoContainer).animate()
+                .alpha(0f)
+                .scaleX(1.2f)
+                .scaleY(1.2f)
+                .setDuration(500)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .withEndAction(() -> {
+                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    // Use a smooth transition
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    finish();
+                })
+                .start();
     }
 }

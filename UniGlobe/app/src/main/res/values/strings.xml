@@ -1,71 +1,29 @@
 <resources>
     <string name="app_name">UniGlobe</string>
+    
+    <!-- IMPORTANT: Replace this with your actual Web Client ID from Firebase Console -->
+    <string name="default_web_client_id">1044653502222-ovt1lo58t02evsiia660gsam6fmtroa0.apps.googleusercontent.com</string>
 
-    <string-array name="career_options">
+    <string-array name="degree_level_options">
         <item>Select option</item>
-        <item>Engineering</item>
-        <item>Medicine</item>
-        <item>Business</item>
-        <item>Arts</item>
-        <item>Law</item>
+        <item>UG (Undergraduate)</item>
+        <item>PG (Postgraduate)</item>
     </string-array>
 
-    <string-array name="exams_options">
+    <string-array name="budget_options">
         <item>Select option</item>
-        <item>SAT</item>
-        <item>ACT</item>
-        <item>GRE</item>
-        <item>GMAT</item>
-        <item>IELTS</item>
-        <item>TOEFL</item>
-        <item>JEE</item>
-        <item>NEET</item>
-        <item>GATE</item>
-        <item>CAT</item>
+        <item>Under ₹5 Lakh</item>
+        <item>₹5 Lakh - ₹10 Lakh</item>
+        <item>₹10 Lakh - ₹20 Lakh</item>
+        <item>₹20 Lakh - ₹30 Lakh</item>
+        <item>Above ₹30 Lakh</item>
+        <item>Any Budget</item>
     </string-array>
 
-    <string-array name="accommodation_options">
+    <string-array name="university_type_options">
         <item>Select option</item>
-        <item>On-campus dormitory</item>
-        <item>Off-campus apartment</item>
-        <item>Homestay</item>
+        <item>Public</item>
+        <item>Private</item>
+        <item>No Preference</item>
     </string-array>
-
-    <string-array name="location_options">
-        <item>Select option</item>
-        <item>United States</item>
-        <item>United Kingdom</item>
-        <item>India</item>
-        <item>Canada</item>
-        <item>Australia</item>
-    </string-array>
-
-    <string-array name="climate_options">
-        <item>Select option</item>
-        <item>Cold</item>
-        <item>Moderate</item>
-        <item>Warm</item>
-    </string-array>
-
-    <string-array name="extracurricular_options">
-        <item>Select option</item>
-        <item>Sports</item>
-        <item>Arts and Culture</item>
-        <item>Research Clubs</item>
-        <item>Debate</item>
-        <item>Volunteering</item>
-        <item>Tech Clubs</item>
-        <item>Music</item>
-        <item>Dance</item>
-    </string-array>
-
-    <string-array name="language_options">
-        <item>Select option</item>
-        <item>English</item>
-        <item>Hindi</item>
-        <item>French</item>
-        <item>German</item>
-        <item>Spanish</item>
-    </string-array>
-
 </resources>
