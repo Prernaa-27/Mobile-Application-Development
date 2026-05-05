@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Account Fragment layout: Displays user profile summary and preferences within the bottom navigation -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E6E6FA">
+    android:background="#E6E6FA"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,7 +13,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Profile Card -->
+        <!-- Profile Card: User identification details -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,6 +29,7 @@
                 android:padding="24dp"
                 android:gravity="center">
 
+                <!-- User Initial Avatar -->
                 <TextView
                     android:id="@+id/profileInitials"
                     android:layout_width="80dp"
@@ -39,6 +42,7 @@
                     android:textColor="#4B0082"
                     android:layout_marginBottom="16dp"/>
 
+                <!-- Display Name -->
                 <TextView
                     android:id="@+id/profileName"
                     android:text="User Name"
@@ -49,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"/>
 
+                <!-- Account Email -->
                 <TextView
                     android:id="@+id/profileEmail"
                     android:text="user@email.com"
@@ -59,7 +64,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Preferences Card -->
+        <!-- Preferences Card: Summary of questionnaire results -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,6 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"/>
 
+                <!-- List of saved preferences formatted in Java -->
                 <TextView
                     android:id="@+id/preferencesText"
                     android:text="No preferences set"
@@ -93,6 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"/>
 
+                <!-- Edit button to relaunch the Questionnaire (Explicit Intent in Fragment) -->
                 <Button
                     android:id="@+id/editPreferencesBtn"
                     android:text="Edit Preferences"
@@ -104,7 +111,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Actions -->
+        <!-- Logout Action: Triggers session end in AccountFragment.java -->
         <Button
             android:id="@+id/logoutBtn"
             android:text="Logout"

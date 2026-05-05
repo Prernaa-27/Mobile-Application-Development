@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for an empty state message within a sectioned list (e.g., in For You tab) -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -6,6 +7,7 @@
     android:padding="24dp"
     android:gravity="center">
 
+    <!-- Message text indicating no results were found for the specific category -->
     <TextView
         android:id="@+id/emptyMessage"
         android:layout_width="wrap_content"

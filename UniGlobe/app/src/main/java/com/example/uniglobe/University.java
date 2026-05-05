@@ -2,6 +2,10 @@ package com.example.uniglobe;
 
 import java.io.Serializable;
 
+/**
+ * University model class representing a university entity.
+ * Implements Serializable to allow passing university objects between activities via Intents.
+ */
 public class University implements Serializable {
     private int universityId;
     private String name;
@@ -13,6 +17,9 @@ public class University implements Serializable {
     private String websiteUrl;
     private String information;
 
+    /**
+     * Constructor for University object.
+     */
     public University(int universityId, String name, String location, int fees, 
                      String universityType, double overallScore, double employmentOutcomes, 
                      String websiteUrl, String information) {
@@ -27,6 +34,7 @@ public class University implements Serializable {
         this.information = information;
     }
 
+    // Getters for university properties
     public int getUniversityId() { return universityId; }
     public String getName() { return name; }
     public String getLocation() { return location; }
@@ -37,6 +45,9 @@ public class University implements Serializable {
     public String getWebsiteUrl() { return websiteUrl; }
     public String getInformation() { return information; }
 
+    /**
+     * Formats the fees into a readable string (Crores/Lakhs).
+     */
     public String getFormattedFees() {
         if (fees >= 10000000) {
             double crores = fees / 10000000.0;
@@ -49,10 +60,16 @@ public class University implements Serializable {
         }
     }
 
+    /**
+     * Formats the employment outcome score as a percentage string.
+     */
     public String getFormattedEmployment() {
         return String.format("%.1f%%", employmentOutcomes * 10);
     }
 
+    /**
+     * Generates initials for the university based on its name.
+     */
     public String getInitials() {
         String[] words = name.split(" ");
         if (words.length >= 2) {

@@ -14,8 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+/**
+ * UniversityAdapter is a RecyclerView adapter used to display university items in a list.
+ * It is used for the search results and general explore list in BrowseCollegesActivity.
+ */
 public class UniversityAdapter extends RecyclerView.Adapter<UniversityAdapter.UniversityViewHolder> {
 
+    /**
+     * Interface for handling click events on university items.
+     */
     public interface OnUniversityClickListener {
         void onUniversityClick(University university);
     }
@@ -26,6 +33,9 @@ public class UniversityAdapter extends RecyclerView.Adapter<UniversityAdapter.Un
     private String userEmail;
     private OnUniversityClickListener listener;
 
+    /**
+     * Constructor for UniversityAdapter.
+     */
     public UniversityAdapter(Context context, List<University> universities, 
                            DatabaseHelper databaseHelper, String userEmail,
                            OnUniversityClickListener listener) {
@@ -39,6 +49,7 @@ public class UniversityAdapter extends RecyclerView.Adapter<UniversityAdapter.Un
     @NonNull
     @Override
     public UniversityViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Inflate the layout for individual list items
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.college_item, parent, false);
         return new UniversityViewHolder(view);
@@ -48,6 +59,7 @@ public class UniversityAdapter extends RecyclerView.Adapter<UniversityAdapter.Un
     public void onBindViewHolder(@NonNull UniversityViewHolder holder, int position) {
         University university = universities.get(position);
 
+        // Bind data from the University object to the ViewHolder's views
         holder.initials.setText(university.getInitials());
         holder.name.setText(university.getName());
         holder.country.setText(university.getLocation());
@@ -55,21 +67,25 @@ public class UniversityAdapter extends RecyclerView.Adapter<UniversityAdapter.Un
         holder.type.setText(university.getUniversityType());
         holder.rating.setText(String.format("%.1f", university.getOverallScore()));
 
-        // Check if university is saved
+        // Check the database to see if this university is favorited by the user
         boolean isSaved = databaseHelper.isUniversitySaved(userEmail, university.getUniversityId());
         updateBookmarkIcon(holder.bookmarkBtn, isSaved);
 
+        // Click listeners to open university details
         holder.viewDetailsBtn.setOnClickListener(v -> listener.onUniversityClick(university));
         holder.itemView.setOnClickListener(v -> listener.onUniversityClick(university));
 
+        // Handle bookmark/favorite button clicks
         holder.bookmarkBtn.setOnClickListener(v -> {
             if (userEmail != null && !userEmail.isEmpty()) {
                 boolean currentlySaved = databaseHelper.isUniversitySaved(userEmail, university.getUniversityId());
                 if (currentlySaved) {
+                    // Remove from SQLite favorites
                     databaseHelper.removeSavedUniversity(userEmail, university.getUniversityId());
                     updateBookmarkIcon(holder.bookmarkBtn, false);
                     Toast.makeText(context, "Removed from saved", Toast.LENGTH_SHORT).show();
                 } else {
+                    // Add to SQLite favorites
                     databaseHelper.saveUniversity(userEmail, university.getUniversityId());
                     updateBookmarkIcon(holder.bookmarkBtn, true);
                     Toast.makeText(context, "Saved successfully", Toast.LENGTH_SHORT).show();
@@ -80,6 +96,9 @@ public class UniversityAdapter extends RecyclerView.Adapter<UniversityAdapter.Un
         });
     }
 
+    /**
+     * Updates the bookmark icon depending on the saved state.
+     */
     private void updateBookmarkIcon(ImageButton button, boolean isSaved) {
         if (isSaved) {
             button.setImageResource(android.R.drawable.btn_star_big_on);
@@ -90,9 +109,12 @@ public class UniversityAdapter extends RecyclerView.Adapter<UniversityAdapter.Un
 
     @Override
     public int getItemCount() {
-        return universities.size();
+        return universities != null ? universities.size() : 0;
     }
 
+    /**
+     * ViewHolder class to hold and reuse view references for list items.
+     */
     static class UniversityViewHolder extends RecyclerView.ViewHolder {
         TextView initials, name, country, fees, type, rating;
         Button viewDetailsBtn;

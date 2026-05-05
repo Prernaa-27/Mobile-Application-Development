@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Account screen layout: Displays user profile, study preferences, and settings -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F8F9FF">
 
-    <!-- Deep Purple Header -->
+    <!-- Deep Purple Header: Visual background for the profile section -->
     <View
         android:layout_width="match_parent"
         android:layout_height="280dp"
@@ -22,7 +23,7 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Toolbar -->
+            <!-- Toolbar: Contains back button and screen title -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,7 +48,7 @@
                     android:textStyle="bold" />
             </RelativeLayout>
 
-            <!-- Profile Info - High Contrast & No Merging -->
+            <!-- Profile Info: Avatar, Name, and Email -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,6 +64,7 @@
                     app:cardCornerRadius="55dp"
                     app:cardElevation="10dp">
 
+                    <!-- Profile Initial Badge -->
                     <TextView
                         android:id="@+id/profileInitial"
                         android:layout_width="match_parent"
@@ -79,7 +81,7 @@
                     android:id="@+id/profileName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Prernaa Bhargava"
+                    android:text="User Name"
                     android:textColor="#FFFFFF"
                     android:textSize="24sp"
                     android:textStyle="bold"
@@ -89,12 +91,12 @@
                     android:id="@+id/profileEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="prernaa.bhargava.24cse@bmu.edu.in"
+                    android:text="user@example.com"
                     android:textColor="#D1C4E9"
                     android:textSize="14sp" />
             </LinearLayout>
 
-            <!-- Info Cards - Forced White -->
+            <!-- Preferences Card: Summarizes the user's study choices -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -125,6 +127,7 @@
                             android:textStyle="bold"
                             android:textColor="#333333"/>
 
+                        <!-- Edit button triggers the questionnaire intent -->
                         <TextView
                             android:id="@+id/editPreferencesBtn"
                             android:layout_width="wrap_content"
@@ -156,6 +159,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Help/Support Card: Triggers an implicit email intent -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/helpCard"
                 android:layout_width="match_parent"
@@ -206,6 +210,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Logout Button: Triggers session termination and returns to LoginActivity -->
             <Button
                 android:id="@+id/logoutBtn"
                 android:layout_width="match_parent"

@@ -11,16 +11,31 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * DatabaseHelper manages the local SQLite database for the UniGlobe app.
+ * It handles creation, versioning, and all CRUD operations for Universities, Programs,
+ * Counsellors, and Saved (Favorite) items.
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
+    // Database name and version
     private static final String DATABASE_NAME = "uniglobe_v800.db";
     private static final int DATABASE_VERSION = 800;
 
+    /**
+     * Constructor for DatabaseHelper.
+     * @param context The application context
+     */
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Called when the database is created for the first time.
+     * Defines the schema for all tables.
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // Table for storing university details
         db.execSQL("CREATE TABLE Universities (" +
                 "university_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "name TEXT NOT NULL," +
@@ -32,6 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "website_url TEXT," +
                 "information TEXT)");
 
+        // Table for storing programs/courses offered by universities
         db.execSQL("CREATE TABLE Programs (" +
                 "program_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "university_id INTEGER," +
@@ -40,6 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "duration_years INTEGER," +
                 "FOREIGN KEY (university_id) REFERENCES Universities(university_id))");
 
+        // Table for storing contact information of university counsellors
         db.execSQL("CREATE TABLE Counsellors (" +
                 "counsellor_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "university_id INTEGER," +
@@ -47,17 +64,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "email TEXT NOT NULL," +
                 "FOREIGN KEY (university_id) REFERENCES Universities(university_id))");
 
+        // Table for storing universities favorited by students
         db.execSQL("CREATE TABLE Saved_Universities (" +
                 "save_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "student_email TEXT NOT NULL," +
                 "university_id INTEGER," +
                 "saved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
 
+        // Populate the database with initial sample data
         insertSampleData(db);
     }
 
+    /**
+     * Helper method to insert sample data into the database.
+     */
     private void insertSampleData(SQLiteDatabase db) {
-        // Universities
+        // Insert sample Universities
         db.execSQL("INSERT INTO Universities VALUES (1, 'MIT', 'USA', 41500000, 'Private', 9.5, 9.2, 'https://web.mit.edu', 'Top engineering university.')");
         db.execSQL("INSERT INTO Universities VALUES (2, 'Oxford', 'UK', 33200000, 'Public', 9.3, 9.0, 'https://www.ox.ac.uk', 'Historic academic excellence.')");
         db.execSQL("INSERT INTO Universities VALUES (3, 'IIT Bombay', 'India', 300000, 'Public', 9.2, 9.4, 'https://www.iitb.ac.in', 'Premier Indian Institute.')");
@@ -67,7 +89,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Universities VALUES (7, 'Stanford', 'USA', 39800000, 'Private', 9.4, 9.1, 'https://www.stanford.edu', 'Leading innovation hub.')");
         db.execSQL("INSERT INTO Universities VALUES (8, 'BML Munjal University', 'India', 550000, 'Private', 8.4, 8.5, 'https://www.bmu.edu.in', 'Modern university focused on innovation.')");
 
-        // Programs
+        // Insert sample Programs linked to universities
         db.execSQL("INSERT INTO Programs VALUES (1, 1, 'Computer Science', 'UG', 4)");
         db.execSQL("INSERT INTO Programs VALUES (2, 3, 'Computer Science', 'UG', 4)");
         db.execSQL("INSERT INTO Programs VALUES (3, 8, 'Computer Science', 'UG', 4)");
@@ -77,13 +99,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Programs VALUES (7, 6, 'Engineering', 'UG', 4)");
         db.execSQL("INSERT INTO Programs VALUES (8, 2, 'History', 'UG', 3)");
 
-        // Counsellors
+        // Insert sample Counsellors linked to universities
         db.execSQL("INSERT INTO Counsellors VALUES (1, 1, 'Sarah Miller', 'admissions.sarah@mit.edu')");
         db.execSQL("INSERT INTO Counsellors VALUES (2, 2, 'John Davies', 'j.davies@ox.ac.uk')");
         db.execSQL("INSERT INTO Counsellors VALUES (3, 3, 'Amit Sharma', 'amit.admissions@iitb.ac.in')");
         db.execSQL("INSERT INTO Counsellors VALUES (4, 8, 'BMU Admissions Expert', 'admissions@bmu.edu.in')");
     }
 
+    /**
+     * Called when the database needs to be upgraded.
+     * Drops all existing tables and recreates them.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldV, int newV) {
         db.execSQL("DROP TABLE IF EXISTS Saved_Universities");
@@ -93,6 +119,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Retrieves all unique locations available in the Universities table.
+     * Used for populating the questionnaire spinner.
+     */
     public List<String> getAvailableLocations() {
         List<String> list = new ArrayList<>();
         Cursor c = getReadableDatabase().rawQuery("SELECT DISTINCT location FROM Universities ORDER BY location", null);
@@ -101,6 +131,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    /**
+     * Retrieves all unique courses available in the Programs table.
+     * Used for course autocomplete suggestions.
+     */
     public List<String> getAvailableCourses() {
         Set<String> set = new HashSet<>();
         Cursor c = getReadableDatabase().rawQuery("SELECT DISTINCT course FROM Programs ORDER BY course", null);
@@ -109,6 +143,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return new ArrayList<>(set);
     }
 
+    /**
+     * Fetches all universities sorted by overall score.
+     */
     public List<University> getAllUniversities() {
         List<University> list = new ArrayList<>();
         Cursor c = getReadableDatabase().rawQuery("SELECT * FROM Universities ORDER BY overall_score DESC", null);
@@ -117,6 +154,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    /**
+     * Searches for universities matching a query string in name or location.
+     */
     public List<University> searchUniversities(String query) {
         List<University> list = new ArrayList<>();
         Cursor c = getReadableDatabase().rawQuery("SELECT * FROM Universities WHERE name LIKE ? OR location LIKE ? ORDER BY overall_score DESC", 
@@ -126,6 +166,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    /**
+     * Advanced filtering: Retrieves universities that match all specified user preferences.
+     */
     public List<University> getFilteredUniversities(UserPreferences prefs) {
         List<University> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -135,6 +178,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String degree = prefs.getDegreeLevel();
         String budgetStr = prefs.getBudget();
 
+        // Build a dynamic SQL query based on provided preferences
         StringBuilder q = new StringBuilder("SELECT DISTINCT u.* FROM Universities u ");
         List<String> args = new ArrayList<>();
 
@@ -162,6 +206,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    /**
+     * Filters universities by a specific location.
+     */
     public List<University> getUniversitiesByLocation(String location) {
         List<University> list = new ArrayList<>();
         if (location == null || location.equals("Select option")) return list;
@@ -171,6 +218,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    /**
+     * Filters universities that offer a specific course.
+     */
     public List<University> getUniversitiesByCourse(String course) {
         List<University> list = new ArrayList<>();
         if (course == null || course.isEmpty()) return list;
@@ -182,6 +232,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    /**
+     * Filters universities based on a fee range category.
+     */
     public List<University> getUniversitiesByBudget(String budgetStr) {
         List<University> list = new ArrayList<>();
         if (budgetStr == null || budgetStr.equals("Select option") || budgetStr.equals("Any Budget")) return list;
@@ -194,6 +247,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    /**
+     * Maps a database cursor row to a University object.
+     */
     private University cursorToUniversity(Cursor c) {
         return new University(
             c.getInt(c.getColumnIndexOrThrow("university_id")),
@@ -208,6 +264,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
     }
 
+    /**
+     * Fetches all programs offered by a specific university.
+     */
     public List<Program> getProgramsByUniversity(int id) {
         List<Program> list = new ArrayList<>();
         Cursor c = getReadableDatabase().rawQuery("SELECT * FROM Programs WHERE university_id = ?", new String[]{String.valueOf(id)});
@@ -216,6 +275,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    /**
+     * Fetches the counsellor for a specific university.
+     */
     public Counsellor getCounsellorByUniversity(int id) {
         Cursor c = getReadableDatabase().rawQuery("SELECT * FROM Counsellors WHERE university_id = ? LIMIT 1", new String[]{String.valueOf(id)});
         Counsellor counsellor = null;
@@ -226,6 +288,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return counsellor;
     }
 
+    /**
+     * Retrieves all universities saved as favorites by a specific student.
+     */
     public List<University> getSavedUniversities(String email) {
         List<University> list = new ArrayList<>();
         Cursor c = getReadableDatabase().rawQuery("SELECT u.* FROM Universities u INNER JOIN Saved_Universities s ON u.university_id = s.university_id WHERE s.student_email = ?", new String[]{email});
@@ -234,6 +299,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    /**
+     * Checks if a university is already in the student's favorites list.
+     */
     public boolean isUniversitySaved(String email, int id) {
         Cursor c = getReadableDatabase().rawQuery("SELECT 1 FROM Saved_Universities WHERE student_email = ? AND university_id = ?", new String[]{email, String.valueOf(id)});
         boolean exists = c.moveToFirst();
@@ -241,12 +309,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exists;
     }
 
+    /**
+     * Adds a university to the student's favorites.
+     */
     public boolean saveUniversity(String email, int id) {
         ContentValues v = new ContentValues();
         v.put("student_email", email); v.put("university_id", id);
         return getWritableDatabase().insertWithOnConflict("Saved_Universities", null, v, SQLiteDatabase.CONFLICT_IGNORE) != -1;
     }
 
+    /**
+     * Removes a university from the student's favorites.
+     */
     public boolean removeSavedUniversity(String email, int id) {
         return getWritableDatabase().delete("Saved_Universities", "student_email = ? AND university_id = ?", new String[]{email, String.valueOf(id)}) > 0;
     }

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Layout for a single university item in a standard list (used in Search and Explore) -->
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -14,13 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Header with initials badge and rating -->
+        <!-- Header: Displays the university initials badge and its overall rating -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp">
 
-            <!-- Initials Badge -->
+            <!-- Initials Badge: Circular background with short name code -->
             <TextView
                 android:id="@+id/collegeInitials"
                 android:layout_width="60dp"
@@ -33,7 +34,7 @@
                 android:textColor="#4B0082"
                 android:layout_alignParentStart="true"/>
 
-            <!-- Rating -->
+            <!-- Star Rating Section -->
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
@@ -60,7 +61,7 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <!-- College Name -->
+        <!-- Main College Name -->
         <TextView
             android:id="@+id/collegeName"
             android:textSize="22sp"
@@ -70,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"/>
 
-        <!-- Country with icon -->
+        <!-- Location display with a pin icon -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
@@ -92,7 +93,7 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
-        <!-- Fees with icon -->
+        <!-- Annual Fees display with a currency icon -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
@@ -116,7 +117,7 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
-        <!-- Type Badge -->
+        <!-- University Type Badge (e.g. Public, Private) -->
         <TextView
             android:id="@+id/collegeType"
             android:textSize="12sp"
@@ -130,13 +131,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"/>
 
-        <!-- View Details Button -->
+        <!-- Action Row: View Details button and Favorite/Bookmark button -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
 
+            <!-- Button to open the CollegeDetailsActivity (Explicit Intent in Adapter) -->
             <Button
                 android:id="@+id/viewDetailsBtn"
                 android:text="View Details"
@@ -149,6 +151,7 @@
                 android:layout_marginEnd="8dp"
                 app:cornerRadius="8dp"/>
 
+            <!-- Toggle button for saving to favorites -->
             <ImageButton
                 android:id="@+id/bookmarkBtn"
                 android:src="@android:drawable/btn_star_big_off"

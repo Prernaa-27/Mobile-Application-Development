@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- College Details screen layout: Shows comprehensive information about a specific university -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -12,7 +13,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- Header Card -->
+        <!-- Header Card: Contains initials, name, location, and rating -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!-- Initials Badge -->
+                <!-- Initials Badge: Displays the first letters of the university name -->
                 <TextView
                     android:id="@+id/detailInitials"
                     android:layout_width="80dp"
@@ -40,7 +41,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="16dp"/>
 
-                <!-- College Name -->
+                <!-- Full College Name -->
                 <TextView
                     android:id="@+id/detailName"
                     android:textSize="26sp"
@@ -51,7 +52,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"/>
 
-                <!-- Country and Rating -->
+                <!-- Location and Star Rating display -->
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
@@ -98,7 +99,7 @@
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
 
-                <!-- Type Badge -->
+                <!-- University Type Badge (e.g., Public/Private) -->
                 <TextView
                     android:id="@+id/detailType"
                     android:textSize="14sp"
@@ -114,7 +115,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- About the University -->
+        <!-- About Section: Displays a long description/information text -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -148,7 +149,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Key Information -->
+        <!-- Quick Facts Section: Fees, Website link, and Employment rate -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -164,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:weightSum="3">
 
-                <!-- Annual Fees -->
+                <!-- Yearly Fees column -->
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="0dp"
@@ -199,7 +200,7 @@
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
 
-                <!-- Website -->
+                <!-- Official Website link (Triggers an implicit browser intent in Java) -->
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="0dp"
@@ -233,7 +234,7 @@
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
 
-                <!-- Employment -->
+                <!-- Employment Statistics column -->
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="0dp"
@@ -269,7 +270,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Programs Offered -->
+        <!-- Programs List: Displays all courses offered by this university -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -316,7 +317,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Connect with Counsellors -->
+        <!-- Contact Section: Contains the button to contact a counsellor -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -353,6 +354,7 @@
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
 
+                <!-- Send Email Button (Triggers an implicit email intent in Java) -->
                 <Button
                     android:id="@+id/sendEmailBtn"
                     android:text="Send Email"

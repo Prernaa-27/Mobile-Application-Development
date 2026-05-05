@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Home Fragment layout: Displays a list of all available universities -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#E6E6FA">
 
-    <!-- Header -->
+    <!-- Header: Page title and dynamic university count text -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <!-- RecyclerView for universities -->
+    <!-- Main List Container: RecyclerView for university cards -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/universitiesRecyclerView"
         android:layout_width="match_parent"

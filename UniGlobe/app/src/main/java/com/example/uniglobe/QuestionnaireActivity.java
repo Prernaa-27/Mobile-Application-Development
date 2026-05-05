@@ -23,13 +23,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * QuestionnaireActivity collects user preferences such as location, degree level,
+ * budget, and preferred course to provide personalized university recommendations.
+ */
 public class QuestionnaireActivity extends AppCompatActivity {
 
+    // UI Components for user input
     private Spinner locationSpinner, degreeLevelSpinner, budgetSpinner, universityTypeSpinner;
     private AutoCompleteTextView courseInput;
-    private Switch scholarshipSwitch;
     private Button submitBtn;
 
+    // Data and Firebase helpers
     private FirebaseUser user;
     private FirebaseFirestore db;
     private DatabaseHelper databaseHelper;
@@ -38,15 +43,17 @@ public class QuestionnaireActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Sets the layout resource for the questionnaire
         setContentView(R.layout.activity_questionnaire);
 
         try {
+            // Initialize Firebase and local storage helpers
             user = FirebaseAuth.getInstance().getCurrentUser();
             db = FirebaseFirestore.getInstance();
             databaseHelper = new DatabaseHelper(this);
             userPreferences = new UserPreferences(this);
 
-            // Bind views
+            // Bind UI components from layout
             locationSpinner = findViewById(R.id.locationSpinner);
             degreeLevelSpinner = findViewById(R.id.degreeLevelSpinner);
             budgetSpinner = findViewById(R.id.budgetSpinner);
@@ -54,23 +61,23 @@ public class QuestionnaireActivity extends AppCompatActivity {
             courseInput = findViewById(R.id.courseInput);
             submitBtn = findViewById(R.id.submitBtn);
 
-            // Disable submit initially
+            // Disable submit button by default until form validation passes
             if (submitBtn != null) {
                 submitBtn.setEnabled(false);
             }
 
-            // Setup static spinners
+            // Setup spinners with static data from strings.xml resources
             if (degreeLevelSpinner != null) setupSpinner(degreeLevelSpinner, R.array.degree_level_options);
             if (budgetSpinner != null) setupSpinner(budgetSpinner, R.array.budget_options);
             if (universityTypeSpinner != null) setupSpinner(universityTypeSpinner, R.array.university_type_options);
 
-            // Setup dynamic location spinner from database
+            // Fetch and setup the location spinner with data from the SQLite database
             setupDynamicLocationSpinner();
 
-            // Setup autocomplete for courses from database
+            // Setup autocomplete for course input using data from the database
             setupCourseAutocomplete();
 
-            // Submit button click
+            // Set click listener for the submit button
             if (submitBtn != null) {
                 submitBtn.setOnClickListener(v -> {
                     saveAnswers();
@@ -83,6 +90,9 @@ public class QuestionnaireActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Configures a Spinner with an adapter and selection listener.
+     */
     private void setupSpinner(Spinner spinner, int arrayResId) {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this,
@@ -98,12 +108,14 @@ public class QuestionnaireActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, android.view.View view, int position, long id) {
                 if (view != null) {
                     TextView textView = (TextView) view;
+                    // Change text color based on whether an item is selected or it's the hint
                     if (position == 0) {
-                        textView.setTextColor(Color.parseColor("#666666"));
+                        textView.setTextColor(Color.parseColor("#666666")); // Hint color
                     } else {
-                        textView.setTextColor(Color.parseColor("#000000"));
+                        textView.setTextColor(Color.parseColor("#000000")); // Selection color
                     }
                 }
+                // Check if all fields are filled whenever an item is selected
                 validateForm();
             }
             @Override
@@ -111,16 +123,17 @@ public class QuestionnaireActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Populates the location spinner with unique locations found in the database.
+     */
     private void setupDynamicLocationSpinner() {
         try {
-            if (locationSpinner == null || databaseHelper == null) {
-                android.util.Log.e("QuestionnaireActivity", "LocationSpinner or DatabaseHelper is null");
-                return;
-            }
+            if (locationSpinner == null || databaseHelper == null) return;
 
+            // Get unique locations from SQLite
             List<String> locations = databaseHelper.getAvailableLocations();
             List<String> locationOptions = new ArrayList<>();
-            locationOptions.add("Select option");
+            locationOptions.add("Select option"); // Placeholder/Hint
             if (locations != null && !locations.isEmpty()) {
                 locationOptions.addAll(locations);
             }
@@ -155,13 +168,14 @@ public class QuestionnaireActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets up the autocomplete suggestions for the course input field.
+     */
     private void setupCourseAutocomplete() {
         try {
-            if (courseInput == null || databaseHelper == null) {
-                android.util.Log.e("QuestionnaireActivity", "CourseInput or DatabaseHelper is null");
-                return;
-            }
+            if (courseInput == null || databaseHelper == null) return;
 
+            // Get unique courses from SQLite
             List<String> courses = databaseHelper.getAvailableCourses();
             if (courses != null && !courses.isEmpty()) {
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -170,7 +184,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
                         courses
                 );
                 courseInput.setAdapter(adapter);
-                courseInput.setThreshold(1);
+                courseInput.setThreshold(1); // Show suggestions after 1 character
             }
 
             courseInput.setOnItemClickListener((parent, view, position, id) -> {
@@ -184,6 +198,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
                 public void onTextChanged(CharSequence s, int start, int before, int count) {}
                 @Override
                 public void afterTextChanged(android.text.Editable s) {
+                    // Validate form as the user types
                     validateForm();
                 }
             });
@@ -192,6 +207,9 @@ public class QuestionnaireActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Checks if all required fields in the questionnaire have been filled out.
+     */
     private void validateForm() {
         try {
             boolean allValid =
@@ -202,6 +220,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
                     courseInput != null && !courseInput.getText().toString().trim().isEmpty();
 
             if (submitBtn != null) {
+                // Enable or disable the submit button based on validation result
                 submitBtn.setEnabled(allValid);
             }
         } catch (Exception e) {
@@ -209,6 +228,9 @@ public class QuestionnaireActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Saves the user's answers to SharedPreferences and Firestore, then navigates away.
+     */
     private void saveAnswers() {
         String location = locationSpinner.getSelectedItem().toString();
         String degreeLevel = degreeLevelSpinner.getSelectedItem().toString();
@@ -216,10 +238,10 @@ public class QuestionnaireActivity extends AppCompatActivity {
         String universityType = universityTypeSpinner.getSelectedItem().toString();
         String course = courseInput.getText().toString().trim();
 
-        // Save locally
+        // Save preferences locally using UserPreferences helper (SharedPreferences)
         userPreferences.savePreferences(course, location, degreeLevel, budget, universityType);
 
-        // Also save to Firestore if user is logged in
+        // Also save to Firestore for cross-device persistence if user is logged in
         if (user != null) {
             Map<String, Object> answers = new HashMap<>();
             answers.put("preferredCourse", course);
@@ -235,6 +257,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
                         navigateToBrowse();
                     })
                     .addOnFailureListener(e -> {
+                        // Navigate even if cloud save fails to not block user experience
                         navigateToBrowse();
                     });
         } else {
@@ -242,12 +265,17 @@ public class QuestionnaireActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Navigates the user to the BrowseCollegesActivity.
+     */
     private void navigateToBrowse() {
-        android.util.Log.d("QuestionnaireActivity", "Navigating to BrowseCollegesActivity");
         Toast.makeText(this, "Preferences saved! Finding universities for you...", Toast.LENGTH_SHORT).show();
+        // Explicit Intent: Used to launch BrowseCollegesActivity
         Intent intent = new Intent(QuestionnaireActivity.this, BrowseCollegesActivity.class);
+        // Flags to clear the task stack so the user cannot navigate back to the questionnaire
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        // Finish this activity
         finish();
     }
 }
